@@ -1,4 +1,6 @@
 ---
+
+import { ViewTransitions } from 'astro:transitions';
 interface Props {
     id: string;
     flightNumber: number;
@@ -12,14 +14,38 @@ const successText = success ? 'Éxito' : 'Fracaso';
 ---
 
 <a href={`/launch/${id}`}
-class="rounded-lg border shadow-sm bg-gray-800 border-gray-700 hover:scale-105 hover:bg-gray-700 
-hover:border-gray-500 transition flex flex-col"
->
-    <picture class="flex justify-center p-4">
-        <img class=" mb-5 rounded-lg" src={img} alt={`Patch for launch ${id}`}>
-    </picture>
+    
+class="relative rounded-lg border shadow-sm bg-gray-800 border-gray-400 transition-transform
+    flex flex-col overflow-hidden
+    before:content-[''] before:absolute before:inset-0 before:rounded-lg
+    before:pointer-events-none
+    before:bg-gradient-to-br before:from-red-500 before:via-sky-500 before:to-red-300
+    before:opacity-0 hover:before:opacity-80 before:transition-colors before:z-10
+    before:p-[2px] hover:text-white group "
+    style="
+      --tw-before-mask-image: linear-gradient(#fff 0 0) content-box, linear-gradient(#205cca 0 0);
+      --tw-before-mask-composite: exclude;
+      --tw-before-mask-repeat: no-repeat;
+      --tw-before-mask-size: 100% 100%;
+      --tw-before-mask-position: center;
+      mask-image: var(--tw-before-mask-image);
+      mask-composite: var(--tw-before-mask-composite);
+      -webkit-mask-image: var(--tw-before-mask-image);
+      -webkit-mask-composite: var(--tw-before-mask-composite);
+      -webkit-mask-repeat: var(--tw-before-mask-repeat);
+      -webkit-mask-size: var(--tw-before-mask-size);
+      -webkit-mask-position: var(--tw-before-mask-position);
+    "
 
-    <header class="p-4 flex-grow">
+
+>
+    <picture class="flex justify-center p-4 z-20 relative">
+        <img class="mb-5 rounded-lg" src={img} alt={`Patch for launch ${id}`}
+        transition:name={`launch-${id}`}
+        transition:animate="fade"
+        transition:persist={`launch-${id}`}/>
+    </picture>
+    <header class="p-4 flex-grow z-20 relative">
         <span 
             class:list={[
             "text-xs font-semibold mr-2 px-2.5 py-0.5 rounded",
@@ -30,15 +56,11 @@ hover:border-gray-500 transition flex flex-col"
             ]}>
             {successText}
         </span>
-
         <h2 class="my-2 text-2xl font-bold tracking-tight text-white">
             Fligth #{flightNumber}
-
         </h2>
-
-        <p class="mb-4 font-light text-gray-400">
-            {details != null && details.length > 100 ? details.slice(0, 100) + '...' : details}
-
+        <p class="mb-4 font-light text-gray-400 w-40 h-10 overflow-hidden text-ellipsis whitespace-nowrap group-hover:text-white">
+            {details}
         </p>
     </header>
 </a>

@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Launches from '../components/Launches.astro';
+
+
+interface Props { //typescript
+
+	title: string;
+
+
+}
+
+const { title } = Astro.props; // recuperar el dato y lo leemos desde el archivo de props.
+---
+
+<Layout title="SpaceX Launches">
+	<Launches  />
+</Layout>
